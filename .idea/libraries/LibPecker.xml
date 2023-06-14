@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="LibPecker">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/LibPecker.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

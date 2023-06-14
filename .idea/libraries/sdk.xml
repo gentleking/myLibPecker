@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="sdk">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/sdk/android-22.jar!/" />
+      <root url="jar://$PROJECT_DIR$/sdk/android-23.jar!/" />
+      <root url="jar://$PROJECT_DIR$/sdk/android-20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/sdk/android-21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/sdk/android-19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/sdk/android-14.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
