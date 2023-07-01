@@ -11,6 +11,9 @@ import cn.fudan.libpecker.core.PackageMapEnumerator;
 import cn.fudan.libpecker.core.PackagePairCandidate;
 import cn.fudan.libpecker.model.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -64,11 +67,59 @@ public class ProfileBasedLibPecker {
         Step 1: candidate package calculation
         for each lib package, find all apk packages that has at least 50% matched class hashes
         */
+//        boolean sucess = true;
+//        for (ApkPackageProfile apkPackageProfile : apkPackageProfileMap.values()) {
+//            LibPackageProfile packageProfile = LibPackageProfile.apk2libPackage(apkPackageProfile);
+//        }
+
+//        if (sucess) {
+//            return 0;
+//        }
+
+        int count = 0;
         Map<String, PackagePairCandidate> libPackagePairCandidateMap = new HashMap<>();//pkg name -> PackagePairCandidate
         for (LibPackageProfile libPkg : libPackageProfileMap.values()) {
+
             PackagePairCandidate candidatePackages = new PackagePairCandidate(libPkg, apkPackageProfileMap.values());
 
+            /* APP Privacy Compliance
+             * for a package, output its class pair and similarity with an APK
+             */
+            Map<String, String> classPair = new HashMap<>();
+            Map<String, Double> classSimilarityPair = new HashMap<>();
+
+            classPair = candidatePackages.getMaxClassPairMap();
+            classSimilarityPair = candidatePackages.getMaxClassSimilarityMap();
+
+            String fileName = "classPairOutput.txt";
+            String diffClassName = "diffClassName.txt";
+            try {
+                FileWriter fileWriter = new FileWriter(fileName, true);
+                PrintWriter output = new PrintWriter(fileWriter);
+
+                FileWriter diffFileWriter = new FileWriter(diffClassName, true);
+                PrintWriter diffOutput = new PrintWriter(diffFileWriter);
+
+                for (String className: classPair.keySet()) {
+                    output.print(className + ":" + classPair.get(className) + ":");
+                    output.println(classSimilarityPair.get(className));
+                    System.out.println(libPkg.packageName + ":" + className + ":" + classPair.get(className) + ":" + classSimilarityPair.get(className));
+                    if (!className.equals(classPair.get(className))) {
+                        diffOutput.print(className + ":" +classPair.get(className) + ":");
+                        diffOutput.println(classSimilarityPair.get(className));
+                        count++;
+                    }
+                }
+                output.close();
+                diffOutput.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("same class name count: " + count);
+
+
             libPackagePairCandidateMap.put(libPkg.packageName, candidatePackages);
+
             if (LibPeckerConfig.DEBUG_LIBPECKER) {
                 System.out.println(libPkg.packageName + ", weight: " + libPkg.getPackageWeight());
                 for (ApkPackageProfile apkPackageProfile : candidatePackages.getCandiApkPackages()) {

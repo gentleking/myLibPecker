@@ -45,13 +45,32 @@ public class ProfileComparator {
                     continue;
 
                 double similarity = ProfileComparator.rawClassSimilarity(simpleLibClassProfile, apkClassProfile);
-                if (similarity >= RAW_CLASS_SIMILARITY_THRESHOLD) {
-                    if (similarity > maxSimilarity) {
-                        maxSimilarity = similarity;
-                        bestMatchApkClassProfile = apkClassProfile;
-                    }
+
+                /* APP Compliance Similarity
+                * set the similarity threshold
+                * if similarity greater than maxSimilarity and the class pair name is not equal
+                * then put the class pair to map
+                */
+                if (libClassName.equals(apkClassProfile.getClassName())) {
+                    maxSimilarity = similarity;
+                    bestMatchApkClassProfile = apkClassProfile;
+                    break;
                 }
+                else if (similarity > maxSimilarity) {
+                    maxSimilarity = similarity;
+                    bestMatchApkClassProfile = apkClassProfile;
+                }
+
+//                if (similarity >= RAW_CLASS_SIMILARITY_THRESHOLD) {
+//                    if (similarity >= maxSimilarity) {
+//                        if (/*similarity == maxSimilarity &&*/ !(libClassName.equals(bestMatchApkClassProfile.getClassName()))) {
+//                            maxSimilarity = similarity;
+//                            bestMatchApkClassProfile = apkClassProfile;
+//                        }
+//                    }
+//                }
             }
+
 
             if (bestMatchApkClassProfile != null) {
                 classNameMap.put(libClassName, bestMatchApkClassProfile.getClassName());

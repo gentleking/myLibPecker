@@ -3,6 +3,7 @@ package cn.fudan.libpecker.model;
 import cn.fudan.analysis.dep.DepAnalysis;
 import cn.fudan.analysis.profile.ClassProfile;
 import cn.fudan.analysis.util.DexHelper;
+import cn.fudan.common.Apk;
 import cn.fudan.common.Lib;
 import cn.fudan.libpecker.analysis.ClassWeightAnalysis;
 import cn.fudan.libpecker.analysis.RootPackageAnalysis;
@@ -38,6 +39,12 @@ public class LibProfile {
         }
         return null;
     }
+
+//    public static LibProfile create(Apk apk, Set<String> targetSdkClassNameSet) {
+//        LibProfile libProfile = new LibProfile();
+//
+//        return libProfile;
+//    }
 
     public static LibProfile create(Lib lib, Set<String> targetSdkClassNameSet) {
         LibProfile libProfile = new LibProfile();

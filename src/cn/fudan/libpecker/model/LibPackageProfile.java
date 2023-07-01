@@ -1,12 +1,16 @@
 package cn.fudan.libpecker.model;
 
+import cn.fudan.analysis.dep.DepAnalysis;
 import cn.fudan.analysis.profile.ClassProfile;
+import cn.fudan.libpecker.analysis.ClassWeightAnalysis;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
+
+//import static cn.fudan.libpecker.model.LibProfile.getClassProfilesGroupedByPackage;
 
 /**
  * Created by yuanxzhang on 27/04/2017.
@@ -111,5 +115,16 @@ public class LibPackageProfile implements Serializable {
         this.classBBWeightMap = (Map<String, Integer>)in.readObject();
         this.classDepWeightMap = (Map<String, Integer>)in.readObject();
         this.classProfileMap = (Map<String, SimpleClassProfile>)in.readObject();
+    }
+
+    /*
+     * Transform an apkPackageProfile to several libPackageProfile
+     */
+    public static LibPackageProfile apk2libPackage(ApkPackageProfile apkPackageProfile) {
+        Set<SimpleClassProfile> classSet = new HashSet<>();
+        for (SimpleClassProfile classProfile: apkPackageProfile.classProfileMap.values()) {
+            classSet.add(classProfile);
+        }
+        return new LibPackageProfile(apkPackageProfile.packageName, apkPackageProfile.classBBWeightMap, apkPackageProfile.classDepWeightMap, classSet);
     }
 }

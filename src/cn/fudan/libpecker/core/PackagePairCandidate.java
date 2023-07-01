@@ -6,6 +6,7 @@ import cn.fudan.common.util.PackageNameUtil;
 import cn.fudan.libpecker.model.ApkPackageProfile;
 import cn.fudan.libpecker.model.LibPackageProfile;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -21,6 +22,9 @@ public class PackagePairCandidate {
     private List<Double> candiApkPackageSimilarity;
     private Map<ApkPackageProfile, Map<String, String>> apkPackageClassNameMap;//for each apk package, records the lib class name map to apk class name
 
+    private Map<String, String> maxClassPairMap;
+    private Map<String, Double> maxClassSimilarityMap;
+
     public PackagePairCandidate(LibPackageProfile libPackage, Collection<ApkPackageProfile> apkPackages) {
         this.libPackageProfile = libPackage;
         this.libPackageName = libPackage.packageName;
@@ -29,17 +33,55 @@ public class PackagePairCandidate {
         candiApkPackageSimilarity = new ArrayList<>();
         apkPackageClassNameMap = new HashMap<>();
 
+        maxClassPairMap = new HashMap<>();
+        maxClassSimilarityMap = new HashMap<>();
+
         for (ApkPackageProfile apkPackage : apkPackages) {
             matchClassHashPercent(apkPackage);
         }
+    }
+
+
+    public Map<String, String> getMaxClassPairMap() {
+        return maxClassPairMap;
+    }
+
+    public Map<String, Double> getMaxClassSimilarityMap() {
+        return maxClassSimilarityMap;
     }
 
     private void matchClassHashPercent(ApkPackageProfile apkPackageProfile) {
         Map<String, String> classNameMap = new HashMap<>();
         Map<String, Double> classRawSimilarity = new HashMap<>();
 
+        /*
+        * calculate the similarity of two class pair, save the result to classNameMap and classRawSimilarity
+        */
         double weightedSimilarity = ProfileComparator.rawPackageSimilarity(libPackageProfile, apkPackageProfile,
                 classNameMap, classRawSimilarity);
+
+        /* APP Privacy Compliance
+        *  Generate class pair and their max similarity with class name key
+        */
+        for (String className: classNameMap.keySet()) {
+            if (!maxClassPairMap.containsKey(className)) {
+                maxClassPairMap.put(className, classNameMap.get(className));
+                maxClassSimilarityMap.put(className, classRawSimilarity.get(className));
+            }
+            else if (className.equals(classNameMap.get(className))) {
+//                if (classRawSimilarity.get(className) > maxClassSimilarityMap.get(className)) {
+                    maxClassPairMap.put(className, classNameMap.get(className));
+                    maxClassSimilarityMap.put(className, classRawSimilarity.get(className));
+//                }
+            }
+            else if (classRawSimilarity.get(className) > maxClassSimilarityMap.get(className)) {
+                maxClassPairMap.put(className, classNameMap.get(className));
+                maxClassSimilarityMap.put(className, classRawSimilarity.get(className));
+            }
+        }
+
+
+
 
         if (LibPeckerConfig.DEBUG_LIBPECKER) {
             System.out.println("[pkg-level] " + libPackageName + " : " + apkPackageProfile.packageName + " : " + weightedSimilarity);

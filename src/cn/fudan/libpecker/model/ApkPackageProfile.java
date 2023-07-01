@@ -80,4 +80,6 @@ public class ApkPackageProfile implements Serializable {
         this.packageName = (String)in.readObject();
         this.classProfileMap = (Map<String, SimpleClassProfile>)in.readObject();
     }
+
+
 }
