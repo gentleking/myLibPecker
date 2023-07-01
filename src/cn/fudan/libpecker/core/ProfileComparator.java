@@ -46,6 +46,7 @@ public class ProfileComparator {
 
                 double similarity = ProfileComparator.rawClassSimilarity(simpleLibClassProfile, apkClassProfile);
 
+
                 /* APP Compliance Similarity
                 * set the similarity threshold
                 * if similarity greater than maxSimilarity and the class pair name is not equal
@@ -61,14 +62,6 @@ public class ProfileComparator {
                     bestMatchApkClassProfile = apkClassProfile;
                 }
 
-//                if (similarity >= RAW_CLASS_SIMILARITY_THRESHOLD) {
-//                    if (similarity >= maxSimilarity) {
-//                        if (/*similarity == maxSimilarity &&*/ !(libClassName.equals(bestMatchApkClassProfile.getClassName()))) {
-//                            maxSimilarity = similarity;
-//                            bestMatchApkClassProfile = apkClassProfile;
-//                        }
-//                    }
-//                }
             }
 
 

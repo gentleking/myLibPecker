@@ -67,13 +67,8 @@ public class ProfileBasedLibPecker {
         Step 1: candidate package calculation
         for each lib package, find all apk packages that has at least 50% matched class hashes
         */
-//        boolean sucess = true;
 //        for (ApkPackageProfile apkPackageProfile : apkPackageProfileMap.values()) {
 //            LibPackageProfile packageProfile = LibPackageProfile.apk2libPackage(apkPackageProfile);
-//        }
-
-//        if (sucess) {
-//            return 0;
 //        }
 
         int count = 0;
@@ -115,7 +110,7 @@ public class ProfileBasedLibPecker {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("same class name count: " + count);
+            System.out.println("different class name pair count: " + count);
 
 
             libPackagePairCandidateMap.put(libPkg.packageName, candidatePackages);
