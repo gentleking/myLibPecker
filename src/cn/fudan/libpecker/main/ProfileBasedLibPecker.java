@@ -67,6 +67,10 @@ public class ProfileBasedLibPecker {
         Step 1: candidate package calculation
         for each lib package, find all apk packages that has at least 50% matched class hashes
         */
+
+        /*
+        Calculate every class similarity of package in apk
+        */
 //        for (ApkPackageProfile apkPackageProfile : apkPackageProfileMap.values()) {
 //            LibPackageProfile packageProfile = LibPackageProfile.apk2libPackage(apkPackageProfile);
 //        }

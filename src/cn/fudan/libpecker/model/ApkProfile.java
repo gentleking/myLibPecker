@@ -24,7 +24,7 @@ public class ApkProfile {
         List<ApkPackageProfile> apkProfiles = new ArrayList<>();
 
 
-        /*
+        /* APP Privacy Compliance
         * Change initializing ApkPackageProfile
         */
 //        Map<String, Integer> classBBWeightMap = ClassWeightAnalysis.getClassBBWeight(apk);

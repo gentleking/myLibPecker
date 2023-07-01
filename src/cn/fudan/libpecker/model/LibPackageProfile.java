@@ -117,7 +117,7 @@ public class LibPackageProfile implements Serializable {
         this.classProfileMap = (Map<String, SimpleClassProfile>)in.readObject();
     }
 
-    /*
+    /* APP Privacy Compliance
      * Transform an apkPackageProfile to several libPackageProfile
      */
     public static LibPackageProfile apk2libPackage(ApkPackageProfile apkPackageProfile) {
