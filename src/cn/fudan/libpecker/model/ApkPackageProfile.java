@@ -39,8 +39,17 @@ public class ApkPackageProfile implements Serializable {
         this.packageName = packageNode.getPackageName();
 
         Set<ClassProfile> classProfiles = ProfileGenerator.generate(packageNode, targetSdkClassNameSet);
+        this.classBBWeightMap = new HashMap<>();
+        this.classDepWeightMap = new HashMap<>();
+
         for (ClassProfile classProfile : classProfiles) {
             classProfileMap.put(classProfile.getClassName(), classProfile);
+
+            /* APP Privacy Compliance
+             set classBBWeightMap and classDepWeightMap as default 1
+             */
+            classBBWeightMap.put(classProfile.getClassName(), 1);
+            classDepWeightMap.put(classProfile.getClassName(), 1);
         }
 
         this.subPackagesNum = packageNode.getSubPackagesNum();
